@@ -81,6 +81,12 @@ le capacità disponibili.
 7. durationMs rappresenta
 il tempo del movimento o dell'attesa
 espresso in millisecondi.
+
+
+8. NON occuparti della sicurezza fisica.
+
+Un altro componente del sistema
+deciderà se il piano può essere eseguito.
 `.trim();
 
 

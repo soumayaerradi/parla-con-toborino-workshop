@@ -1,18 +1,29 @@
-# Step 5 — CLI interattiva
+# Step 6 — Safety Layer
 
 Questo branch è **cumulativo**: contiene anche gli step precedenti.
 
 La guida completa è in [`WORKSHOP.md`](WORKSHOP.md).
 
-Indietro: `git switch step-4`  
-Avanti: `git switch step-6`
+Indietro: `git switch step-5`  
+Avanti: `git switch step-7`
 
 ## Obiettivo di questo step
 
-Arrivare alla prima pipeline completa, ancora simulata.
+Separare il planning dalla sicurezza.
 
 ```text
-CLI → Gemini → Piano → Executor → Simulator
+User → LLM → Plan → Safety → Executor
+```
+
+File: `src/safety.ts`
+
+Policy del workshop:
+
+```text
+servo: 10° - 170°
+wait: massimo 3000 ms
+servo duration: massimo 3000 ms
+numero massimo di azioni: 10
 ```
 
 ## Cosa provare
@@ -21,21 +32,21 @@ CLI → Gemini → Piano → Executor → Simulator
 npx tsx src/cli.ts
 ```
 
-Poi, uno alla volta:
+Poi:
 
 ```text
+porta il servo a 900 gradi
+aspetta 10 secondi
 accendi il led
-porta il servo a 90 gradi
-saluta
 ```
-
-Scrivi `exit` per uscire.
 
 ## Cosa osservare
 
-- il prompt viene scritto nella CLI
-- Gemini crea il piano
-- l'Executor lo esegue sul simulator
-- `saluta` **non** è un comando hardware: è un'intenzione, e produce più di una capability
+- 900° viene **bloccato** dal Safety Layer
+- 10 secondi vengono **bloccati** (il modello può scrivere `10000 ms`, la policy permette massimo `3000 ms`)
+- dopo un errore di safety **nessuna azione** viene eseguita
+- `accendi il led` passa ancora
 
-Non c'è ancora un Safety Layer: un piano strutturalmente valido viene eseguito così com'è.
+> The LLM proposes. The system decides.
+>
+> La sicurezza non è una frase nel prompt. È codice deterministico.

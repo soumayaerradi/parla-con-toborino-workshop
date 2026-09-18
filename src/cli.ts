@@ -19,6 +19,11 @@ import {
   Executor,
 } from "./executor.js";
 
+import {
+  validatePlan,
+  SafetyError,
+} from "./safety.js";
+
 
 const planner =
   new GeminiPlanner();
@@ -113,6 +118,21 @@ while (true) {
 
 
     console.log(
+      "\n🛡️ Safety check...\n"
+    );
+
+
+    validatePlan(
+      plan
+    );
+
+
+    console.log(
+      "✅ Piano sicuro"
+    );
+
+
+    console.log(
       "\n⚙️ Esecuzione...\n"
     );
 
@@ -131,6 +151,25 @@ while (true) {
   catch (
     error
     ) {
+
+    if (
+      error instanceof
+      SafetyError
+    ) {
+
+      console.error(
+        "\n🛑 BLOCCATO DAL SAFETY LAYER"
+      );
+
+
+      console.error(
+        `   ${error.message}\n`
+      );
+
+
+      continue;
+    }
+
 
     if (
       error instanceof
