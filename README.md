@@ -1,30 +1,21 @@
-# Step 6 — Safety Layer
+# Step 7 — Finite vs Continuous
 
 Questo branch è **cumulativo**: contiene anche gli step precedenti.
 
 La guida completa è in [`WORKSHOP.md`](WORKSHOP.md).
 
-Indietro: `git switch step-5`  
-Avanti: `git switch step-7`
+Indietro: `git switch step-6`  
+Avanti: `git switch step-8`
 
 ## Obiettivo di questo step
 
-Separare il planning dalla sicurezza.
+Rappresentare correttamente l'intenzione continua, e farla **rifiutare** dal Safety Layer.
 
-```text
-User → LLM → Plan → Safety → Executor
+```ts
+executionMode: "finite" | "continuous"
 ```
 
-File: `src/safety.ts`
-
-Policy del workshop:
-
-```text
-servo: 10° - 170°
-wait: massimo 3000 ms
-servo duration: massimo 3000 ms
-numero massimo di azioni: 10
-```
+Un JSON valido non è automaticamente un'intenzione corretta, né un'azione sicura.
 
 ## Cosa provare
 
@@ -32,21 +23,23 @@ numero massimo di azioni: 10
 npx tsx src/cli.ts
 ```
 
-Poi:
-
 ```text
-porta il servo a 900 gradi
-aspetta 10 secondi
-accendi il led
+continua a salutare senza fermarti
+saluta 3 volte
 ```
 
 ## Cosa osservare
 
-- 900° viene **bloccato** dal Safety Layer
-- 10 secondi vengono **bloccati** (il modello può scrivere `10000 ms`, la policy permette massimo `3000 ms`)
-- dopo un errore di safety **nessuna azione** viene eseguita
-- `accendi il led` passa ancora
+- `senza fermarti` → `executionMode: "continuous"` e un ciclo **minimo**, non 50 ripetizioni
+- `continuous` viene bloccato:
 
-> The LLM proposes. The system decides.
->
-> La sicurezza non è una frase nel prompt. È codice deterministico.
+```text
+🛑 BLOCCATO DAL SAFETY LAYER
+Continuous execution is not allowed.
+```
+
+- `saluta 3 volte` è finito e può essere eseguito
+
+```text
+VALID JSON  ≠  CORRECT INTENT  ≠  SAFE ACTION
+```

@@ -36,7 +36,71 @@ Il piano contiene:
 - steps
 
 
-executionMode in questo step è sempre "finite".
+executionMode può essere:
+
+- finite
+- continuous
+
+
+USA executionMode = "finite"
+quando il comando ha una durata o un numero
+di azioni finito.
+
+Esempi:
+
+"accendi il led"
+→ finite
+
+"saluta"
+→ finite
+
+"saluta 3 volte"
+→ finite
+
+"porta il servo a 90 gradi"
+→ finite
+
+
+USA executionMode = "continuous"
+quando l'utente chiede esplicitamente
+un comportamento senza fine o continuo.
+
+Esempi:
+
+"continua a salutare senza fermarti"
+→ continuous
+
+"fallo per sempre"
+→ continuous
+
+"continua a muoverti"
+→ continuous
+
+"non smettere mai"
+→ continuous
+
+
+IMPORTANTE:
+
+Se executionMode è "continuous",
+NON devi simulare la continuità
+creando tante azioni duplicate.
+
+Devi produrre solamente
+il ciclo minimo necessario
+a rappresentare il comportamento.
+
+Esempio:
+
+"continua a salutare senza fermarti"
+
+può diventare:
+
+executionMode: continuous
+
+steps:
+- move_servo 45
+- move_servo 135
 
 
 REGOLE:
@@ -87,6 +151,14 @@ espresso in millisecondi.
 
 Un altro componente del sistema
 deciderà se il piano può essere eseguito.
+
+
+9. Non trasformare un comando continuo
+in un numero arbitrario di ripetizioni.
+
+Se l'utente chiede qualcosa
+senza fine,
+usa executionMode = continuous.
 `.trim();
 
 

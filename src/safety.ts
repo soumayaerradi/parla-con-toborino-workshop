@@ -107,6 +107,25 @@ export function validatePlan(
   plan: RobotPlan
 ): RobotPlan {
 
+  /*
+   * Continuous execution is deliberately
+   * forbidden by the workshop safety policy.
+   *
+   * The LLM can understand the user's intent,
+   * but it cannot create an infinite hardware loop.
+   */
+
+  if (
+    plan.executionMode ===
+    "continuous"
+  ) {
+
+    throw new SafetyError(
+      "Continuous execution is not allowed. Please specify a finite duration or number of repetitions."
+    );
+  }
+
+
   if (
     plan.steps.length === 0
   ) {

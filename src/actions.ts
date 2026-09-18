@@ -33,9 +33,10 @@ export const RobotPlanSchema =
       z.string(),
 
     executionMode:
-      z.literal(
-        "finite"
-      ),
+      z.enum([
+        "finite",
+        "continuous",
+      ]),
 
     steps:
       z.array(
