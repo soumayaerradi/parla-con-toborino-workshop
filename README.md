@@ -1,44 +1,34 @@
-# Step 3 — Structured output
+# Step 4 — Simulator + Executor
 
 Questo branch è **cumulativo**: contiene anche gli step precedenti.
 
 La guida completa è in [`WORKSHOP.md`](WORKSHOP.md).
 
-Indietro: `git switch step-2`  
-Avanti: `git switch step-4`
+Indietro: `git switch step-3`  
+Avanti: `git switch step-5`
 
 ## Obiettivo di questo step
 
-Passare da una risposta libera dell'LLM a un contratto strutturato.
+Eseguire il piano **senza hardware**.
 
 ```text
-"accendi il led"
-        ↓
-Gemini + Zod
-        ↓
-RobotPlan
+Gemini → RobotPlan → Executor → Device → Simulator
 ```
 
-File: `src/actions.ts`, `src/gemini-planner.ts`
+File: `src/device.ts`, `src/executor.ts`, `src/devices/simulator.ts`
 
 ## Cosa provare
 
 ```bash
-npm install
-npx tsx src/plan-test.ts "accendi il led"
-```
-
-Poi prova anche:
-
-```bash
-npx tsx src/plan-test.ts "saluta"
+npx tsx src/run-plan.ts "accendi il led"
+npx tsx src/run-plan.ts "porta il servo a 90 gradi"
+npx tsx src/run-plan.ts "saluta"
 ```
 
 ## Cosa osservare
 
-- il modello restituisce JSON, non una frase
-- il JSON passa attraverso Zod (`RobotPlanSchema`)
-- `accendi il led` diventa `{ type: "led_on" }`
-- `saluta` **non** è una capability: il modello la decompone usando solo le azioni consentite
+- `Executor` parla solo con l'interfaccia `Device`
+- `SimulatorDevice` implementa `Device` e stampa LED/servo sulla console
+- il piano gira anche se l'ESP32 non è collegata
 
-> Structured output è un contratto sulla forma. Non è ancora safety.
+La business logic non deve dipendere direttamente dall'hardware.
