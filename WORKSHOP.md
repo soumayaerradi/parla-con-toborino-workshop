@@ -100,7 +100,7 @@ Opzionale. Per la parte finale del workshop useremo:
 - servo motore
 - cavo USB **dati** (non un cavo solo-ricarica)
 
-Firmware e cablaggio: più avanti. Sul branch `main` trovi anche `docs/HARDWARE.md`.
+Firmware e cablaggio: più avanti in questa guida, dagli step 8-10.
 
 Nel setup usato durante il workshop:
 
