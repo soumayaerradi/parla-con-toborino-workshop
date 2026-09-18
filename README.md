@@ -1,39 +1,44 @@
-# Step 2 — Capability del robot
+# Step 3 — Structured output
 
-Questo branch è **cumulativo**: contiene anche lo step 1.
+Questo branch è **cumulativo**: contiene anche gli step precedenti.
 
 La guida completa è in [`WORKSHOP.md`](WORKSHOP.md).
 
-Indietro: `git switch step-1`  
-Avanti: `git switch step-3`
+Indietro: `git switch step-2`  
+Avanti: `git switch step-4`
 
 ## Obiettivo di questo step
 
-Definire il vocabolario delle azioni. Il robot **non** sa fare qualsiasi cosa. Sa soltanto:
+Passare da una risposta libera dell'LLM a un contratto strutturato.
 
 ```text
-led_on
-led_off
-move_servo
-wait
+"accendi il led"
+        ↓
+Gemini + Zod
+        ↓
+RobotPlan
 ```
 
-File: `src/actions.ts`
+File: `src/actions.ts`, `src/gemini-planner.ts`
 
 ## Cosa provare
 
-Apri `src/actions.ts` e confrontalo con la chiamata libera dello step 1.
-
 ```bash
-npx tsx src/gemini-test.ts
+npm install
+npx tsx src/plan-test.ts "accendi il led"
 ```
 
-funziona ancora: non abbiamo ancora collegato il modello a questo vocabolario.
+Poi prova anche:
+
+```bash
+npx tsx src/plan-test.ts "saluta"
+```
 
 ## Cosa osservare
 
-- esiste uno schema TypeScript delle azioni
-- il vocabolario è chiuso: niente pin, PWM o sketch Arduino
-- l'hardware non è ancora coinvolto
+- il modello restituisce JSON, non una frase
+- il JSON passa attraverso Zod (`RobotPlanSchema`)
+- `accendi il led` diventa `{ type: "led_on" }`
+- `saluta` **non** è una capability: il modello la decompone usando solo le azioni consentite
 
-> Prima di chiedere al modello cosa fare, definiamo cosa **può** fare.
+> Structured output è un contratto sulla forma. Non è ancora safety.

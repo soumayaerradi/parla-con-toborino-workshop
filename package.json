@@ -6,11 +6,13 @@
   "description": "Workshop: dal linguaggio naturale al mondo fisico con un LLM.",
   "scripts": {
     "gemini-test": "tsx src/gemini-test.ts",
+    "plan": "tsx src/plan-test.ts",
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
     "@google/genai": "^2.22.0",
-    "dotenv": "^17.0.0"
+    "dotenv": "^17.0.0",
+    "zod": "^4.6.2"
   },
   "devDependencies": {
     "@types/node": "^24.13.4",
