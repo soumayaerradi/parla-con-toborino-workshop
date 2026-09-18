@@ -65,7 +65,7 @@ Se non hai mai usato Node, Git o Gemini, parti da **[`WORKSHOP.md` — Prima di 
 |---|---|
 | Node.js LTS (include `npm`) | [nodejs.org/en/download](https://nodejs.org/en/download) |
 | Git | [git-scm.com/downloads](https://git-scm.com/downloads) |
-| Editor | [VS Code](https://code.visualstudio.com/) o [Cursor](https://cursor.com/) |
+| Editor | Qualsiasi editor va bene. |
 | API key Gemini (account Google) | [aistudio.google.com/apikey](https://aistudio.google.com/apikey) |
 | Arduino IDE 2 (solo con ESP32) | [arduino.cc/en/software](https://www.arduino.cc/en/software) |
 
