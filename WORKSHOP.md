@@ -88,7 +88,6 @@ git --version
 3. Se è la prima volta, accetta i termini: Studio può creare da solo un progetto e una chiave.
 4. Altrimenti clicca **Create API key**.
 5. Copia la chiave. La incollerai in `.env` come `GEMINI_API_KEY=...`.
-6. Non condividerla in chat, screenshot o commit.
 
 Se la pagina chiede un progetto Google Cloud, puoi usarne uno esistente o lasciar creare quello predefinito.
 
@@ -96,9 +95,9 @@ Se la pagina chiede un progetto Google Cloud, puoi usarne uno esistente o lascia
 
 Opzionale. Per la parte finale del workshop useremo:
 
-- ESP32 WROOM
+- ESP32
 - LED onboard dell'ESP32 oppure LED esterno
-- servo SG90
+- servo motore
 - cavo USB **dati** (non un cavo solo-ricarica)
 
 Firmware e cablaggio: più avanti. Sul branch `main` trovi anche `docs/HARDWARE.md`.
