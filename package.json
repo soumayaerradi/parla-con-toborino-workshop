@@ -3,15 +3,19 @@
   "version": "1.0.0",
   "private": true,
   "type": "module",
-  "description": "Workshop: dal linguaggio naturale al mondo fisico con un LLM.",
+  "description": "Workshop di 2 ore: un LLM propone un piano strutturato, il software decide se eseguirlo, il firmware protegge l'hardware.",
   "scripts": {
     "dev": "tsx src/cli.ts",
     "gemini-test": "tsx src/gemini-test.ts",
+    "ports": "tsx src/ports.ts",
+    "test-device": "tsx src/test-serial.ts",
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
     "@google/genai": "^2.22.0",
+    "@serialport/parser-readline": "^13.0.0",
     "dotenv": "^17.0.0",
+    "serialport": "^13.0.0",
     "zod": "^4.6.2"
   },
   "devDependencies": {

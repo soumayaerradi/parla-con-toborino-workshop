@@ -12,8 +12,8 @@ import {
 } from "./gemini-planner.js";
 
 import {
-  SimulatorDevice,
-} from "./devices/simulator.js";
+  createDevice,
+} from "./create-device.js";
 
 import {
   Executor,
@@ -30,7 +30,7 @@ const planner =
 
 
 const device =
-  new SimulatorDevice();
+  await createDevice();
 
 
 const executor =
