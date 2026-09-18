@@ -1,42 +1,50 @@
-# Step 9 — LED reale
+# Step 10 — Servo reale
 
 Questo branch è **cumulativo**: contiene anche gli step precedenti.
 
 La guida completa è in [`WORKSHOP.md`](WORKSHOP.md).
 
-Indietro: `git switch step-8`  
-Avanti: `git switch step-10`
+Indietro: `git switch step-9`  
+Avanti: `git switch step-11`
 
 ## Obiettivo di questo step
 
-La prima azione dal linguaggio naturale al mondo fisico.
+Muovere un servo SG90 dal linguaggio naturale.
+
+Collegamenti (setup del workshop):
 
 ```text
-"accendi il led" → Gemini → led_on → Safety → Executor → SerialDevice → LED 1 → ESP32 → LED ON
+rosso   → 5V
+marrone → GND
+arancio → GPIO 13
 ```
 
-Firmware: `firmware/esp32-workshop/esp32-workshop.ino`  
-`LED_PIN = 2`
+Firmware: `SERVO_PIN = 13`  
+Range consentito: `10° - 170°`
 
 ## Cosa provare
 
-1. Flashare il firmware.
-2. Dal Serial Monitor: `LED 1` poi `LED 0`.
-3. Chiudere il Serial Monitor.
-4. In `.env`: `DEVICE=serial` e la porta corretta.
-5. Avviare:
+Dal Serial Monitor:
+
+```text
+SERVO 45
+SERVO 90
+SERVO 135
+```
+
+Chiudi il Serial Monitor, poi:
 
 ```bash
 npx tsx src/cli.ts
 ```
 
 ```text
-accendi il led
-spegni il led
+porta il servo a 90 gradi
+saluta
 ```
 
 ## Cosa osservare
 
-- il LED è controllabile dal Serial Monitor
-- la stessa cosa arriva dalla CLI, passando per piano e safety
-- la frase naturale arriva davvero all'hardware
+- il servo risponde ai comandi seriali
+- `porta il servo a 90 gradi` funziona dalla CLI
+- `saluta` genera una sequenza fisica, non un singolo comando hardware

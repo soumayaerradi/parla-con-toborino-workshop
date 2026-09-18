@@ -1,6 +1,10 @@
 #include <Arduino.h>
+#include <ESP32Servo.h>
 
 const int LED_PIN = 2;
+const int SERVO_PIN = 13;
+
+Servo servo;
 
 void setup() {
   Serial.begin(115200);
@@ -8,6 +12,10 @@ void setup() {
 
   pinMode(LED_PIN, OUTPUT);
   digitalWrite(LED_PIN, LOW);
+
+  servo.setPeriodHertz(50);
+  servo.attach(SERVO_PIN, 500, 2400);
+  servo.write(90);
 
   Serial.println("TOBORINO_READY");
 }
@@ -34,6 +42,22 @@ void loop() {
   if (command == "LED 0") {
     digitalWrite(LED_PIN, LOW);
     Serial.println("OK LED");
+    return;
+  }
+
+  if (command.startsWith("SERVO ")) {
+    int angle = command.substring(6).toInt();
+
+    if (angle < 10 || angle > 170) {
+      Serial.println("ERR SERVO_RANGE");
+      return;
+    }
+
+    servo.write(angle);
+
+    Serial.print("OK SERVO ");
+    Serial.println(angle);
+
     return;
   }
 

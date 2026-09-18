@@ -8,7 +8,7 @@ import {
 
 
 console.log(
-  "🧪 Test dispositivo (LED, senza LLM)...\n"
+  "🧪 Test dispositivo (senza LLM)...\n"
 );
 
 
@@ -42,6 +42,26 @@ try {
 
   await device.setLed(
     false
+  );
+
+  await sleep(
+    200
+  );
+
+
+  await device.setServo(
+    45,
+    400
+  );
+
+  await device.setServo(
+    135,
+    400
+  );
+
+  await device.setServo(
+    90,
+    400
   );
 
 
