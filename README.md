@@ -1,34 +1,41 @@
-# Step 4 — Simulator + Executor
+# Step 5 — CLI interattiva
 
 Questo branch è **cumulativo**: contiene anche gli step precedenti.
 
 La guida completa è in [`WORKSHOP.md`](WORKSHOP.md).
 
-Indietro: `git switch step-3`  
-Avanti: `git switch step-5`
+Indietro: `git switch step-4`  
+Avanti: `git switch step-6`
 
 ## Obiettivo di questo step
 
-Eseguire il piano **senza hardware**.
+Arrivare alla prima pipeline completa, ancora simulata.
 
 ```text
-Gemini → RobotPlan → Executor → Device → Simulator
+CLI → Gemini → Piano → Executor → Simulator
 ```
-
-File: `src/device.ts`, `src/executor.ts`, `src/devices/simulator.ts`
 
 ## Cosa provare
 
 ```bash
-npx tsx src/run-plan.ts "accendi il led"
-npx tsx src/run-plan.ts "porta il servo a 90 gradi"
-npx tsx src/run-plan.ts "saluta"
+npx tsx src/cli.ts
 ```
+
+Poi, uno alla volta:
+
+```text
+accendi il led
+porta il servo a 90 gradi
+saluta
+```
+
+Scrivi `exit` per uscire.
 
 ## Cosa osservare
 
-- `Executor` parla solo con l'interfaccia `Device`
-- `SimulatorDevice` implementa `Device` e stampa LED/servo sulla console
-- il piano gira anche se l'ESP32 non è collegata
+- il prompt viene scritto nella CLI
+- Gemini crea il piano
+- l'Executor lo esegue sul simulator
+- `saluta` **non** è un comando hardware: è un'intenzione, e produce più di una capability
 
-La business logic non deve dipendere direttamente dall'hardware.
+Non c'è ancora un Safety Layer: un piano strutturalmente valido viene eseguito così com'è.

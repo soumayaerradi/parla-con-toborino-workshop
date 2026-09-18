@@ -5,9 +5,8 @@
   "type": "module",
   "description": "Workshop: dal linguaggio naturale al mondo fisico con un LLM.",
   "scripts": {
+    "dev": "tsx src/cli.ts",
     "gemini-test": "tsx src/gemini-test.ts",
-    "plan": "tsx src/plan-test.ts",
-    "run": "tsx src/run-plan.ts",
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
