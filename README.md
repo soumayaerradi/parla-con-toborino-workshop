@@ -31,6 +31,11 @@ SERIAL_BAUD=115200
 
 La porta sul tuo computer potrebbe avere un nome diverso: `npx tsx src/ports.ts`
 
+Se è la prima volta con Arduino:
+
+- IDE: [arduino.cc/en/software](https://www.arduino.cc/en/software) (versione **2**, non 1.8)
+- Board ESP32: [Installing Arduino ESP32](https://docs.espressif.com/projects/arduino-esp32/en/latest/installing.html)
+
 Flashare `firmware/esp32-workshop/esp32-workshop.ino`, **chiudere** il Serial Monitor, poi:
 
 ```bash
