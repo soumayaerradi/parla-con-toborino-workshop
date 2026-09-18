@@ -162,6 +162,130 @@ usa executionMode = continuous.
 `.trim();
 
 
+const sleep = (
+  ms: number
+): Promise<void> =>
+  new Promise(
+    resolve =>
+      setTimeout(
+        resolve,
+        ms
+      )
+  );
+
+
+function getErrorMessage(
+  error: unknown
+): string {
+
+  if (
+    error instanceof Error
+  ) {
+    return error.message;
+  }
+
+  return String(
+    error
+  );
+}
+
+
+function isRetryableError(
+  error: unknown
+): boolean {
+
+  const message =
+    getErrorMessage(
+      error
+    );
+
+
+  return (
+    message.includes(
+      '"code":503'
+    ) ||
+    message.includes(
+      '"code":429'
+    ) ||
+    message.includes(
+      "UNAVAILABLE"
+    ) ||
+    message.includes(
+      "RESOURCE_EXHAUSTED"
+    )
+  );
+}
+
+
+async function withRetry<T>(
+  operation: () => Promise<T>,
+  maxAttempts = 4
+): Promise<T> {
+
+  let lastError:
+    unknown;
+
+
+  for (
+    let attempt = 1;
+    attempt <= maxAttempts;
+    attempt++
+  ) {
+
+    try {
+
+      return await operation();
+
+    }
+    catch (
+      error
+      ) {
+
+      lastError =
+        error;
+
+
+      if (
+        !isRetryableError(
+          error
+        )
+      ) {
+        throw error;
+      }
+
+
+      if (
+        attempt ===
+        maxAttempts
+      ) {
+        throw error;
+      }
+
+
+      const delayMs =
+        500 *
+        Math.pow(
+          2,
+          attempt - 1
+        );
+
+
+      console.log(
+        `⚠️ Gemini temporaneamente non disponibile. Retry ${attempt}/${maxAttempts} tra ${delayMs}ms...`
+      );
+
+
+      await sleep(
+        delayMs
+      );
+    }
+  }
+
+
+  throw lastError;
+}
+
+
 export class GeminiPlanner {
 
   private readonly ai:
@@ -203,31 +327,36 @@ export class GeminiPlanner {
 
 
     const response =
-      await this.ai.models
-        .generateContent({
+      await withRetry(
+        () =>
+          this.ai.models
+            .generateContent({
 
-          model,
+              model,
 
-          contents:
-          command,
+              contents:
+              command,
 
-          config: {
+              config: {
 
-            systemInstruction:
-            SYSTEM_PROMPT,
+                systemInstruction:
+                SYSTEM_PROMPT,
 
-            responseMimeType:
-              "application/json",
+                responseMimeType:
+                  "application/json",
 
-            responseJsonSchema:
-              z.toJSONSchema(
-                RobotPlanSchema
-              ),
+                responseJsonSchema:
+                  z.toJSONSchema(
+                    RobotPlanSchema
+                  ),
 
-            temperature:
-              0,
-          },
-        });
+                temperature:
+                  0,
+              },
+            }),
+
+        4
+      );
 
 
     if (
