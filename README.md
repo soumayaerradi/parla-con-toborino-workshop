@@ -1,61 +1,120 @@
-# Step 11 — Soluzione finale robusta
+# Parla con Toborino
 
-Questo branch è **cumulativo**: è la versione completa del workshop.
+Dal linguaggio naturale al mondo fisico con un LLM.
 
-La guida completa è in [`WORKSHOP.md`](WORKSHOP.md).
+```text
+Linguaggio naturale
+        ↓
+      LLM
+        ↓
+ Piano strutturato
+        ↓
+   Safety Layer
+        ↓
+     Executor
+        ↓
+      Device
+   ┌────┴────┐
+Simulator   ESP32
+              ↓
+         LED + Servo
+```
 
-Indietro: `git switch step-10`  
-Soluzione su `main`: `git switch main`
+> **The LLM proposes. The system decides.**
 
-## Obiettivo di questo step
+Il modello **non** genera codice Arduino e **non** parla con l'hardware. Propone un piano. Codice TypeScript deterministico decide se può girare.
 
-Rendere la pipeline robusta:
+## Da dove iniziare
 
-- retry Gemini con exponential backoff (`500 ms`, `1000 ms`, `2000 ms`)
-- safety già attiva
-- comandi espliciti **e** astratti
+La guida dei partecipanti è [`WORKSHOP.md`](WORKSHOP.md).
 
-Il modello è una dependency esterna: `503` e `429` non devono far crollare il workshop.
+Il repository è organizzato in **branch progressivi**. Ogni branch è uno step funzionante e cumulativo: se resti indietro, salta allo step successivo invece di copiare a mano.
 
-## Cosa provare
+| Branch | Obiettivo |
+|---|---|
+| `step-1` | Collegarsi a Gemini e ottenere una prima risposta |
+| `step-2` | Definire il vocabolario delle azioni |
+| `step-3` | Ottenere un piano strutturato dall'LLM |
+| `step-4` | Eseguire il piano su un simulatore |
+| `step-5` | Costruire la CLI interattiva |
+| `step-6` | Aggiungere il Safety Layer |
+| `step-7` | Distinguere piani finiti e continui |
+| `step-8` | Collegare TypeScript ed ESP32 via seriale |
+| `step-9` | Accendere un LED reale con linguaggio naturale |
+| `step-10` | Muovere un servo reale |
+| `step-11` | Soluzione robusta: comandi astratti + retry + safety |
+| `main` | Soluzione finale (questo branch) |
+
+Ogni `step-*` ha un `README.md` breve: obiettivo, cosa provare, cosa osservare.
+
+```bash
+git switch step-1
+```
+
+Per vedere il delta:
+
+```bash
+git diff step-1..step-2
+```
+
+## Setup
+
+Serve Node.js 20+ (consigliato 22) e una chiave [Gemini API](https://aistudio.google.com/apikey). Il kit fisico è un extra: tutto gira in simulatore.
+
+```bash
+cp .env.example .env
+npm install
+```
+
+```env
+DEVICE=simulator
+GEMINI_API_KEY=la-tua-chiave
+GEMINI_WORKSHOP_MODEL=gemini-3.1-flash-lite
+```
+
+Poi:
 
 ```bash
 npx tsx src/cli.ts
 ```
 
-Espliciti:
+| Percorso | Comando |
+|---|---|
+| CLI | `npm run dev` |
+| Smoke test senza AI | `npm run test-device` |
+| Elenco porte USB | `npm run ports` |
+| Prima chiamata Gemini | `npx tsx src/gemini-test.ts` |
+
+## Le tre barriere
+
+1. **Structured Output** — Gemini deve restituire JSON che passa `RobotPlanSchema`.
+2. **Safety policy** — `validatePlan` rifiuta piani infiniti, troppe azioni, angoli e attese fuori range.
+3. **Firmware** — l'ESP32 accetta solo `PING`, `LED 0|1`, `SERVO <angolo>` e rifiuta di nuovo gli angoli fuori da 10°–170°.
+
+## Mappa del codice
 
 ```text
-accendi il led
-spegni il led
-porta il servo a 90 gradi
+src/
+  cli.ts                 ingresso: "tu > " → piano → safety → execute
+  gemini-test.ts         step 1: prima chiamata a Gemini
+  actions.ts             vocabolario Zod (led / servo / wait)
+  gemini-planner.ts      Gemini + JSON schema + retry
+  safety.ts              policy deterministica
+  executor.ts            traduce il piano in chiamate Device
+  device.ts              interfaccia: setLed / setServo
+  create-device.ts       DEVICE=simulator | serial
+  devices/simulator.ts   log su console
+  devices/serial.ts      protocollo USB verso l'ESP32
+  ports.ts               elenca le porte seriali
+  test-serial.ts         smoke test senza LLM
+firmware/esp32-workshop/ firmware minimale LED + servo
 ```
 
-Astratti:
+## Per chi presenta
 
-```text
-saluta
-sembra felice
-attira la mia attenzione
-```
-
-Da bloccare:
-
-```text
-porta il servo a 900 gradi
-aspetta 10 secondi
-continua a salutare senza fermarti
-```
-
-Finito ma composto:
-
-```text
-saluta 3 volte
-```
-
-## Cosa osservare
-
-- un errore temporaneo Gemini viene ritentato, non esplode al primo `503`
-- i comandi astratti restano dentro il vocabolario `led_on` / `led_off` / `move_servo` / `wait`
-- safety continua a vietare angoli, attese e loop infiniti
-- Planner, Safety ed Executor non parlano mai direttamente con i GPIO
+| File | Uso |
+|---|---|
+| [`docs/CHEATSHEET.md`](docs/CHEATSHEET.md) | filo della demo in sala |
+| [`docs/WORKSHOP_PLAN.md`](docs/WORKSHOP_PLAN.md) | piano dei 120 minuti |
+| [`docs/HARDWARE.md`](docs/HARDWARE.md) | kit ESP32 |
+| [`exercises/PROMPTS.md`](exercises/PROMPTS.md) | prompt da copiare |
