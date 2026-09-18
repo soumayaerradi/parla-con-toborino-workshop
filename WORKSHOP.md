@@ -31,18 +31,47 @@ Questo repository è organizzato in branch progressivi. Ogni branch rappresenta 
 
 # 0. Prima di iniziare
 
-## Requisiti software
+Non serve essere esperti. I primi step girano **solo sul computer**, senza robot. Arduino e l'ESP32 servono dalla parte finale (`step-8`).
 
-Assicurati di avere:
+## Se parti da zero
 
-- Node.js 20+ (consigliato Node 22)
-- npm
-- Git
-- Arduino IDE
-- una API key Gemini
-- un editor, ad esempio VS Code
+| Termine | In una frase |
+|---|---|
+| **LLM** | Un modello di linguaggio (qui [Gemini](https://ai.google.dev/gemini-api/docs)): gli scrivi in italiano e lui risponde. |
+| **API key** | Una password personale che autorizza il nostro programma a chiamare Gemini. Non va condivisa né committata. |
+| **Node.js** | Il programma che esegue JavaScript/TypeScript sul computer, fuori dal browser. |
+| **npm** | Il gestore di librerie di Node. Arriva insieme a Node.js. |
+| **Git** | Lo strumento per scaricare il progetto e passare da uno step all'altro (`git switch step-1`). |
+| **branch** | Una versione del progetto. `step-3` contiene anche `step-1` e `step-2`. |
+| **`.env`** | Un file locale con i segreti (la API key). Resta sul tuo computer. |
+| **Arduino IDE** | Il programma per caricare il firmware sulla scheda ESP32. |
+| **ESP32** | La schedina USB del kit. Per i primi step puoi ignorarla: c'è un simulatore. |
 
-Controlla:
+## Cosa scaricare
+
+Installa questi programmi **prima** del workshop, se puoi.
+
+1. **Node.js 20+** (consigliato LTS 22 o 24)  
+   Download: [https://nodejs.org/en/download](https://nodejs.org/en/download)  
+   Scegli la versione **LTS**. `npm` è incluso: non serve un installer separato.
+
+2. **Git**  
+   Download: [https://git-scm.com/downloads](https://git-scm.com/downloads)  
+   Su macOS, se `git --version` chiede gli strumenti di sviluppo, accetta e installa.
+
+3. **Un editor**  
+   [VS Code](https://code.visualstudio.com/) oppure [Cursor](https://cursor.com/). Qualsiasi editor va bene.
+
+4. **Chiave Gemini** (obbligatoria, è gratis con un account Google)  
+   Creala qui: [https://aistudio.google.com/apikey](https://aistudio.google.com/apikey)  
+   Guida ufficiale: [Using Gemini API keys](https://ai.google.dev/gemini-api/docs/api-key)
+
+5. **Arduino IDE** (solo se hai l'ESP32; serve da `step-8`)  
+   Download: [https://www.arduino.cc/en/software](https://www.arduino.cc/en/software)  
+   Prendi **Arduino IDE 2**, non la versione legacy 1.8.  
+   Poi installa il supporto ESP32: [Installing Arduino ESP32](https://docs.espressif.com/projects/arduino-esp32/en/latest/installing.html)
+
+Controlla che tutto sia nel PATH:
 
 ```bash
 node -v
@@ -50,14 +79,29 @@ npm -v
 git --version
 ```
 
+`node -v` deve stampare `v20` o superiore (meglio `v22` / `v24`).
+
+### Come creare la API key Gemini
+
+1. Apri [Google AI Studio — API keys](https://aistudio.google.com/apikey).
+2. Accedi con un account Google.
+3. Se è la prima volta, accetta i termini: Studio può creare da solo un progetto e una chiave.
+4. Altrimenti clicca **Create API key**.
+5. Copia la chiave. La incollerai in `.env` come `GEMINI_API_KEY=...`.
+6. Non condividerla in chat, screenshot o commit.
+
+Se la pagina chiede un progetto Google Cloud, puoi usarne uno esistente o lasciar creare quello predefinito.
+
 ## Hardware
 
-Per la parte finale del workshop useremo:
+Opzionale. Per la parte finale del workshop useremo:
 
 - ESP32 WROOM
 - LED onboard dell'ESP32 oppure LED esterno
 - servo SG90
-- cavo USB dati
+- cavo USB **dati** (non un cavo solo-ricarica)
+
+Firmware e cablaggio: più avanti. Sul branch `main` trovi anche `docs/HARDWARE.md`.
 
 Nel setup usato durante il workshop:
 
@@ -69,6 +113,13 @@ Servo GND → GND
 ```
 
 > Se usi una board diversa, verifica il pinout prima di copiare i GPIO.
+
+Per caricare il firmware, in Arduino IDE:
+
+1. Installa l'[Arduino IDE 2](https://www.arduino.cc/en/software).
+2. Aggiungi le board ESP32 (Boards Manager → cerca `esp32` di Espressif), vedi la [guida Espressif](https://docs.espressif.com/projects/arduino-esp32/en/latest/installing.html).
+3. Libreria **ESP32Servo**: *Sketch → Include Library → Manage Libraries…* → cerca `ESP32Servo`.
+4. Board: **ESP32 Dev Module**. Upload Speed: **115200**.
 
 ---
 
@@ -86,7 +137,7 @@ Crea poi il file `.env` partendo da `.env.example`:
 cp .env.example .env
 ```
 
-e inserisci la tua chiave:
+e inserisci la tua chiave (da [aistudio.google.com/apikey](https://aistudio.google.com/apikey)):
 
 ```env
 GEMINI_API_KEY=LA_TUA_API_KEY
