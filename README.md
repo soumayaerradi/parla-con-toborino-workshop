@@ -122,11 +122,4 @@ src/
 firmware/esp32-workshop/ firmware minimale LED + servo
 ```
 
-## Per chi presenta
-
-| File | Uso |
-|---|---|
-| [`docs/CHEATSHEET.md`](docs/CHEATSHEET.md) | filo della demo in sala |
-| [`docs/WORKSHOP_PLAN.md`](docs/WORKSHOP_PLAN.md) | piano dei 120 minuti |
-| [`docs/HARDWARE.md`](docs/HARDWARE.md) | kit ESP32 |
-| [`exercises/PROMPTS.md`](exercises/PROMPTS.md) | prompt da copiare |
+Prompt da copiare nella CLI: [`exercises/PROMPTS.md`](exercises/PROMPTS.md).
