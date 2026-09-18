@@ -60,7 +60,7 @@ Installa questi programmi **prima** del workshop, se puoi.
    Su macOS, se `git --version` chiede gli strumenti di sviluppo, accetta e installa.
 
 3. **Un editor**  
-   [VS Code](https://code.visualstudio.com/) oppure [Cursor](https://cursor.com/). Qualsiasi editor va bene.
+   Qualsiasi editor va bene.
 
 4. **Chiave Gemini** (obbligatoria, è gratis con un account Google)  
    Creala qui: [https://aistudio.google.com/apikey](https://aistudio.google.com/apikey)  
