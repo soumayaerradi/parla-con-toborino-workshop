@@ -20,7 +20,11 @@ Nessun hardware, nessun piano, nessuna CLI.
 cp .env.example .env
 ```
 
-Inserisci `GEMINI_API_KEY` in `.env`, poi:
+Inserisci `GEMINI_API_KEY` in `.env`. Se non ce l'hai ancora, creala su [Google AI Studio](https://aistudio.google.com/apikey).
+
+Se manca Node.js, Git o l'editor, la sezione **0. Prima di iniziare** di [`WORKSHOP.md`](WORKSHOP.md) ha i link di download.
+
+Poi:
 
 ```bash
 npm install
