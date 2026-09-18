@@ -1,36 +1,39 @@
-# Step 1 — Prima chiamata a Gemini
+# Step 2 — Capability del robot
 
-Questo branch è il punto di partenza. La guida completa è in [`WORKSHOP.md`](WORKSHOP.md).
+Questo branch è **cumulativo**: contiene anche lo step 1.
 
-Avanti: `git switch step-2`
+La guida completa è in [`WORKSHOP.md`](WORKSHOP.md).
+
+Indietro: `git switch step-1`  
+Avanti: `git switch step-3`
 
 ## Obiettivo di questo step
 
-Verificare isolatamente la dependency esterna:
+Definire il vocabolario delle azioni. Il robot **non** sa fare qualsiasi cosa. Sa soltanto:
 
 ```text
-TypeScript → Gemini → testo
+led_on
+led_off
+move_servo
+wait
 ```
 
-Nessun hardware, nessun piano, nessuna CLI.
+File: `src/actions.ts`
 
 ## Cosa provare
 
-```bash
-cp .env.example .env
-```
-
-Inserisci `GEMINI_API_KEY` in `.env`, poi:
+Apri `src/actions.ts` e confrontalo con la chiamata libera dello step 1.
 
 ```bash
-npm install
 npx tsx src/gemini-test.ts
 ```
 
+funziona ancora: non abbiamo ancora collegato il modello a questo vocabolario.
+
 ## Cosa osservare
 
-- la API key viene letta da `.env`
-- TypeScript parte senza errori
-- Gemini risponde con `Ciao Toborino!`
+- esiste uno schema TypeScript delle azioni
+- il vocabolario è chiuso: niente pin, PWM o sketch Arduino
+- l'hardware non è ancora coinvolto
 
-Se questo step non funziona, non ha senso fare debug di servo, ESP32 o seriale.
+> Prima di chiedere al modello cosa fare, definiamo cosa **può** fare.
