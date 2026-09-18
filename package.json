@@ -1,0 +1,21 @@
+{
+  "name": "parla-con-toborino-workshop",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Workshop: dal linguaggio naturale al mondo fisico con un LLM.",
+  "scripts": {
+    "gemini-test": "tsx src/gemini-test.ts",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@google/genai": "^2.22.0",
+    "dotenv": "^17.0.0"
+  },
+  "devDependencies": {
+    "@types/node": "^24.13.4",
+    "tsx": "^4.23.13",
+    "typescript": "^5.9.3"
+  },
+  "license": "ISC"
+}
