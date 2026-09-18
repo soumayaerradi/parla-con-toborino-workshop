@@ -59,12 +59,24 @@ git diff step-1..step-2
 
 ## Setup
 
-Serve Node.js 20+ (consigliato 22) e una chiave [Gemini API](https://aistudio.google.com/apikey). Il kit fisico è un extra: tutto gira in simulatore.
+Se non hai mai usato Node, Git o Gemini, parti da **[`WORKSHOP.md` — Prima di iniziare](WORKSHOP.md#0-prima-di-iniziare)**.
+
+| Cosa | Dove |
+|---|---|
+| Node.js LTS (include `npm`) | [nodejs.org/en/download](https://nodejs.org/en/download) |
+| Git | [git-scm.com/downloads](https://git-scm.com/downloads) |
+| Editor | [VS Code](https://code.visualstudio.com/) o [Cursor](https://cursor.com/) |
+| API key Gemini (account Google) | [aistudio.google.com/apikey](https://aistudio.google.com/apikey) |
+| Arduino IDE 2 (solo con ESP32) | [arduino.cc/en/software](https://www.arduino.cc/en/software) |
+
+Il kit fisico è un extra: tutto gira in simulatore.
 
 ```bash
 cp .env.example .env
 npm install
 ```
+
+Apri `.env` e incolla la chiave copiata da AI Studio:
 
 ```env
 DEVICE=simulator
