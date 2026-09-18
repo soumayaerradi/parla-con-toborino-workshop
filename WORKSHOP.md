@@ -126,8 +126,8 @@ Per caricare il firmware, in Arduino IDE:
 # 1. Clonare il repository
 
 ```bash
-git clone <URL_REPOSITORY>
-cd parla-con-toborino
+git clone https://github.com/soumayaerradi/parla-con-toborino-workshop.git
+cd parla-con-toborino-workshop
 npm install
 ```
 
